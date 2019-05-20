@@ -1,10 +1,32 @@
+"""
+This tutorial shows how a neural network (or Deep Neural Network) can be used to approximate the expected value of
+different state-action pairs in a computational model of seizures. This script uses an Off-Policy Q-Learning paradigm to
+determine optimal stimulation parameters to suppress seizures in the Epileptor computational model.
+
+author: Vivek Nagaraj, 2019
+
+Special thanks to Jaromir Janish for the Deep-Q-Network tutorial he put together. His code provided a fantastic
+starting place for designing my reinforcment learning experiments.
+Link: https://jaromiru.com/2016/09/27/lets-make-a-dqn-theory/
+
+Epileptor Model
+1) Jirsa VK, Stacey WC, Quilichini PP, Ivanov AI, Bernard C. On the nature of seizure dynamics.
+Brain. 2014 Jun 10;137(8):2210-30.
+2) Proix T, Bartolomei F, Chauvel P, Bernard C, Jirsa VK. Permittivity coupling across brain regions determines seizure
+recruitment in partial epilepsy. Journal of Neuroscience. 2014 Nov 5;34(45):15009-21.
+"""
+
+
 import os
+import random
 from time import localtime, strftime
 
 from src.epileptor_model import *
 
 WORK_DIR = r'C:\Users\vnaga\Google Drive\Seizure-Control\Actor Critic Methods'
 FIGURE_DIR = os.path.join(WORK_DIR, 'figures')
+
+random.seed(1)
 
 
 def visualizations(time_s, lfp, s1, s2, s3, amp, freq, rew, output_dir):
@@ -26,6 +48,7 @@ def visualizations(time_s, lfp, s1, s2, s3, amp, freq, rew, output_dir):
     ax2.legend(loc='upper left')
     ax[3].plot(time_s, rew, color='black')
     ax[3].set_ylabel('Cumulative Rewards (A.U.)')
+    ax[3].set_xlabel('Time (s)')
     plt.tight_layout()
     plt.show()
     str_time = strftime("%Y-%m-%d_%H%M%S", localtime())

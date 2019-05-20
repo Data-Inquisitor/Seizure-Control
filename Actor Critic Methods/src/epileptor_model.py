@@ -3,16 +3,12 @@ import random
 from tqdm import tqdm
 
 import matplotlib.pyplot as plt
-import tensorflow as tf
-from keras import backend as K
 from keras.models import Sequential
 from keras.layers import *
 from keras.optimizers import *
 
 from src.environments import Epileptor
 from src.settings import *
-
-random.seed(1)
 
 
 class Brain:
