@@ -5,10 +5,10 @@ import pandas as pd
 
 """################### Epileptor Settings ###################"""
 # Initialize parameters
-x0 = 2.0
+x0 = 2.0      # If this value is above 2.92 seizures will not emerge
 y0 = 1
 taux = 0.5
-tau0 = 100
+tau0 = 100    # This time constant controls how often seizures occur
 tau1 = 0.5
 tau2 = 2
 Irest1 = 3.1
@@ -16,47 +16,48 @@ Irest2 = 0.45
 Ep_gamma = 0.01
 
 """################### Simulation Settings ####################"""
-TOTAL_TIME = 1000  # In seconds
-PERIOD = 0.002
-Fs = 1 / PERIOD
-MAX_TIME_STEPS = TOTAL_TIME / PERIOD
-DO_NOT_STIM = True
-STIM_BLOCK_TIME = 20  # In seconds
-STIM_BLOCK_SAMPLES = STIM_BLOCK_TIME * Fs
+TOTAL_TIME = 1000  # How long we want to run the simulation (in seconds)
+PERIOD = 0.002     # Sampling period in seconds
+Fs = 1 / PERIOD    # Sampling rate
+MAX_TIME_STEPS = TOTAL_TIME / PERIOD  # Maximum number of iterations to loop through
+STIM_BLOCK_TIME = 10  # How often to choose a different action (in seconds)
+STIM_BLOCK_SAMPLES = STIM_BLOCK_TIME * Fs  # How often to choose a different action (in samples)
 
 """################### DNN Settings ####################"""
-MEMORY_CAPACITY = 100000
-BATCH_SIZE = 64
-LEARNING_RATE = 0.01
+MEMORY_CAPACITY = 100000  # How many samples of previous states to hold in memory buffer
+BATCH_SIZE = 64  # How many samples to train on
+LEARNING_RATE = 0.1  # Learning rate of backpropagation algorithm
+UPDATE_TARGET_FREQUENCY = 10000  # How often to update weights
 
 """################### RL Settings ####################"""
-GAMMA = 0.01
-MAX_EPSILON = 0.4
-MIN_EPSILON = 0.01
-LAMBDA = 0.001  # speed of decay
-COST_WEIGHT = 1
-UPDATE_TARGET_FREQUENCY = 100
+GAMMA = 0.005    # Discounting factor, how much do we want to trust in the future
+MAX_EPSILON = 0.50  # Maximum probability of choosing a random action
+MIN_EPSILON = 0.01  # Minimum probability of choosing a random action
+LAMBDA = 0.01  # speed of decay of probability of choosing a random action
+COST_WEIGHT = 0.05  # How much we want to weight the cost of stimulation therapy
 
 # Exponential filter for the reward signal
-TAU_FILT = math.exp(-1./1000)
+TAU_FILT = math.exp(-1./4000)
 TAU_NORM = 1/(1-TAU_FILT)
 
 """################### Filter Settings ####################"""
-b_coeff_h, a_coeff_h = butter(N=1, Wn=0.1 / (Fs / 2), btype='hp', fs=Fs)
-b_coeff_l, a_coeff_l = butter(N=1, Wn=0.1 / (Fs / 2), btype='low', fs=Fs)
-b_coeff_rew, a_coeff_rew = butter(N=1, Wn=[0.1 / (Fs / 2), 4 / (Fs / 2)], btype='bp', fs=Fs)
-reward_coeff = {'Num': b_coeff_rew, 'Den': a_coeff_rew}
+# Filter coefficients to get states from LFP
+b_coeff_h, a_coeff_h = butter(N=1, Wn=4 / (Fs / 2), btype='hp', fs=Fs)
+b_coeff_l, a_coeff_l = butter(N=1, Wn=1 / (Fs / 2), btype='low', fs=Fs)
+b_coeff_m, a_coeff_m = butter(N=1, Wn=[1 / (Fs / 2), 4 / (Fs / 2)], btype='bp', fs=Fs)
 
 states = {'State1': {'Num': b_coeff_h, 'Den': a_coeff_h},
-          'State2': {'Num': b_coeff_l, 'Den': a_coeff_l}}
+          'State2': {'Num': b_coeff_l, 'Den': a_coeff_l},
+          'State3': {'Num': b_coeff_m, 'Den': a_coeff_m}}
 
 """################### Action Settings ####################"""
 actions_df = pd.DataFrame(columns=['Action', 'Frequency', 'Amplitude'])
-actions_df['Action'] = np.arange(0, 5)
-actions_df['Frequency'] = [10, 15, 20, 25, 30]
-#actions_df['Amplitude'] = [0.0] + [-0.1, -0.2, -0.4] * 3
-actions_df['Amplitude'] = [-0.094]*5
-#actions_df['Amplitude'] = [0.0] * 10
+actions_df['Action'] = np.arange(0, 6)
+actions_df['Frequency'] = [5, 10, 15, 20, 25, 30]
+#actions_df['Frequency'] = [10, 10, 10, 20, 20, 20, 30, 30, 30]
+#actions_df['Amplitude'] = [-0.05, -1.0, -1.5] * 3
+actions_df['Amplitude'] = [-0.094]*6
+#actions_df['Amplitude'] = [0.0] * 6
 actions_df['Cost'] = actions_df['Frequency'] * (actions_df['Amplitude'] ** 2)
 num_states = len(states.keys())
 num_actions = actions_df.shape[0]

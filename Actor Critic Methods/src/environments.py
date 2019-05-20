@@ -10,7 +10,7 @@ class Epileptor(object):
     """
 
     """
-    def __init__(self, time_step, state_estimators, reward_coeffs):
+    def __init__(self, time_step, state_estimators):
         """
         Initialize parameteres and state vectors
         """
@@ -30,10 +30,10 @@ class Epileptor(object):
         self.z_states = list()
         self.filter_state_1 = list()
         self.filter_state_2 = list()
+        self.filter_state_3 = [0]
         self.smoothLFPPower = list()
 
         self.state_estimators = state_estimators
-        self.reward_coeffs = reward_coeffs
 
     def integrate(self, action, step):
         def _output_1(x1, x2, z):
@@ -81,10 +81,12 @@ class Epileptor(object):
         if init_state_space is True:
             new_state1 = 0
             new_state2 = 0
+            new_state3 = 0
             reward = 0
         elif init_filter is True:
             new_state1 = self.lfp[-1]
             new_state2 = self.lfp[-1]
+            new_state3 = self.lfp[-1]
             self.smoothLFPPower.append(self.lfp[-1]**2)
             reward = 0
         else:
@@ -95,7 +97,15 @@ class Epileptor(object):
 
             new_state2 = [self.state_estimators['State2']['Num'][0]*self.lfp[-1] +
                          self.state_estimators['State2']['Num'][1]*self.lfp[-2] -
-                         self.state_estimators['State2']['Den'][1]*self.filter_state_1[-1]][0]
+                         self.state_estimators['State2']['Den'][1]*self.filter_state_2[-1]][0]
+            if len(self.lfp) == 2:
+                new_state3 = self.lfp[-2]
+            else:
+                new_state3 = [self.state_estimators['State3']['Num'][0]*self.lfp[-1] +
+                             self.state_estimators['State3']['Num'][1]*self.lfp[-2] +
+                              self.state_estimators['State3']['Num'][2] * self.lfp[-3] -
+                             self.state_estimators['State3']['Den'][1]*self.filter_state_3[-1] -
+                              self.state_estimators['State3']['Den'][2] * self.filter_state_3[-2]][0]
 
             # Reward filter
             filtLFP = np.ma.average([i ** 2 for i in self.lfp[-5:]])
@@ -106,19 +116,32 @@ class Epileptor(object):
 
         self.filter_state_1.append(new_state1)
         self.filter_state_2.append(new_state2)
+        self.filter_state_3.append(new_state3)
 
-        return np.asarray([self.filter_state_1[-1], self.filter_state_2[-1]]), reward
+        return np.asarray([self.filter_state_1[-1], self.filter_state_2[-1], self.filter_state_2[-1]]), reward
 
 
 if __name__ in '__main__':
     # Open loop stimulation
-    environment = Epileptor(PERIOD, states, reward_coeff)
+    environment = Epileptor(PERIOD, states)
     for step in tqdm(range(int(MAX_TIME_STEPS))):
-        environment.integrate(actions_df.loc[actions_df.Action == 3, :], step)
+        if step > 5:
+            environment.integrate(actions_df.loc[actions_df.Action == 3, :], step)
+            environment.get_state_space(0, init_state_space=False, init_filter=False)
+        if step < 6:
+            environment.integrate(actions_df.loc[actions_df.Action == 3, :], step)
+            environment.get_state_space(0, init_state_space=False, init_filter=True)
+        else:
+            environment.integrate(actions_df.loc[actions_df.Action == 3, :], step)
+            environment.get_state_space(0, init_state_space=False, init_filter=False)
 
     time = np.linspace(0, MAX_TIME_STEPS * PERIOD, MAX_TIME_STEPS)
-    fig, ax = plt.subplots(figsize=(15, 10), sharex=True)
-    ax.plot(time, environment.lfp)
-    ax.set_ylabel('LFP')
+    fig, ax = plt.subplots(2, 1, figsize=(15, 10), sharex=True)
+    ax[0].plot(time, environment.lfp)
+    ax[0].set_ylabel('LFP')
+    ax[1].plot(time, environment.filter_state_1, color='blue', label='State1')
+    ax[1].plot(time, environment.filter_state_2, color='green', label='State2')
+    ax[1].plot(time, environment.filter_state_3, color='red', label='State3')
+    ax[1].legend()
     plt.show()
 

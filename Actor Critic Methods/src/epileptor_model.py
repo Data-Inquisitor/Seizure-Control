@@ -12,8 +12,7 @@ from keras.optimizers import *
 from src.environments import Epileptor
 from src.settings import *
 
-import cProfile
-import re
+random.seed(1)
 
 
 class Brain:
@@ -28,9 +27,11 @@ class Brain:
         model = Sequential()
 
         model.add(Dense(units=16, activation='relu', input_dim=self.stateCnt))
+        model.add(Dense(units=16, activation='relu', input_dim=self.stateCnt))
+        model.add(Dense(units=16, activation='relu', input_dim=self.stateCnt))
         model.add(Dense(units=self.actionCnt, activation='linear'))
 
-        opt = RMSprop(lr=LEARNING_RATE)
+        opt = Adam(lr=LEARNING_RATE)
         model.compile(loss='mse', optimizer=opt)
 
         return model
@@ -84,10 +85,10 @@ class Agent(object):
     def act(self, state, action_df):
         if random.random() < self.epsilon:
             action_num = random.randint(0, self.actionCnt-1)
-            return action_df.loc[(action_df['Action'] == action_num), ['Action', 'Frequency', 'Amplitude', 'Cost']]
+            return action_df.loc[(action_df['Action'] == action_num), :]
         else:
             action_num = np.argmax(self.brain.predictOne(state))
-            return action_df.loc[(action_df['Action'] == action_num), ['Action', 'Frequency', 'Amplitude', 'Cost']]
+            return action_df.loc[(action_df['Action'] == action_num), :]
 
     def observe(self, sample):  # in (s, a, r, s_) format
         self.memory.add(sample)
@@ -101,28 +102,28 @@ class Agent(object):
 
     def replay(self):
         batch = self.memory.sample(BATCH_SIZE)
-        batchLen = len(batch)
+        batch_len = len(batch)
         no_state = np.zeros(self.stateCnt)
 
-        states = np.array([o[0] for o in batch])
-        states_ = np.array([(no_state if o[3] is None else o[3]) for o in batch])
+        states_ = np.array([o[0] for o in batch])
+        next_states_ = np.array([(no_state if o[3] is None else o[3]) for o in batch])
 
-        predictions = self.brain.predict(states)
-        future_predictions = self.brain.predict(states_)
+        predictions = self.brain.predict(states_)
+        future_predictions = self.brain.predict(next_states_)
 
-        x = np.zeros((batchLen, self.stateCnt))
-        y = np.zeros((batchLen, self.actionCnt))
+        x = np.zeros((batch_len, self.stateCnt))
+        y = np.zeros((batch_len, self.actionCnt))
 
-        for i in range(batchLen):
+        for i in range(batch_len):
             o = batch[i]
-            states, action, reward, states_, actions_ = o
+            states_, action, reward, next_states_, actions_ = o
             unpack_action = action['Action'].values[0]
 
             t = predictions[i]
 
             t[unpack_action] = reward + GAMMA * np.amax(future_predictions[i]) - np.amax(predictions[i])
 
-            x[i] = states.reshape(1, 2)
+            x[i] = states_.reshape(1, 3)
 
             y[i] = t
 
@@ -130,18 +131,17 @@ class Agent(object):
 
 
 class Environment(object):
-    def __init__(self, max_time_steps, time_step, state_estimation, reward_filter_coeff, stim_block_samples,
+    def __init__(self, max_time_steps, time_step, state_estimation, stim_block_samples,
                  actions_df):
         self.max_time_steps = max_time_steps
         self.stim_block_samples = stim_block_samples
-        self.environment = Epileptor(time_step, state_estimation, reward_filter_coeff)
+        self.environment = Epileptor(time_step, state_estimation)
         self.actions_df = actions_df
         self.stim_frequencies = list()
         self.stim_amplitudes = list()
         self.cumulative_rewards = list()
 
     def run(self, agent, next_action):
-        counts = 0
         # Observe initial states
         states, reward = self.environment.get_state_space(next_action['Cost'].values)
         t1 = time.time()
@@ -150,7 +150,7 @@ class Environment(object):
             # Take an action
             action = next_action
 
-            if (np.mod(counts, self.stim_block_samples) == 0) and (counts > 5):
+            if (np.mod(step, self.stim_block_samples) == 0) and (step > 5):
                 # If it is time to take a new action...
                 # Take a step forward
                 self.environment.integrate(action, step)
@@ -162,15 +162,15 @@ class Environment(object):
                 next_action = agent.act(states_, self.actions_df)
 
                 # Observe new state
-                sarsa_packet = (states.reshape(1, 2).flatten(),
+                sarsa_packet = (states.reshape(1, 3).flatten(),
                                 action,
                                 reward,
-                                states_.reshape(1, 2).flatten(),
+                                states_.reshape(1, 3).flatten(),
                                 next_action)
                 agent.observe(sarsa_packet)
                 # Learn from past experiences
                 agent.replay()
-            elif (np.mod(counts, self.stim_block_samples) == 0) and counts < 6:
+            elif (np.mod(step, self.stim_block_samples) == 0) and step < 6:
                 # If it is not time to choose a new action and the simulation has begun
                 # Take a step forward
                 self.environment.integrate(action, step)
@@ -192,7 +192,6 @@ class Environment(object):
             self.cumulative_rewards.append(reward)
             self.stim_frequencies.append(action['Frequency'].values[0])
             self.stim_amplitudes.append(action['Amplitude'].values[0])
-            counts += 1
 
         print('Time to complete rounds: {:.3f}'.format(time.time() - t1))
 
@@ -201,23 +200,29 @@ def main():
 
     therapy_agent = Agent(num_states, num_actions)
 
-    env = Environment(MAX_TIME_STEPS, PERIOD, states, reward_coeff, STIM_BLOCK_SAMPLES,
+    env = Environment(MAX_TIME_STEPS, PERIOD, states, STIM_BLOCK_SAMPLES,
                       actions_df)
 
     init_actions = actions_df.loc[np.random.randint(0, num_actions, 1), :]
     env.run(therapy_agent, init_actions)
 
     time = np.linspace(0, MAX_TIME_STEPS * PERIOD, MAX_TIME_STEPS)
-    fig, ax = plt.subplots(3, 1, figsize=(15, 10), sharex=True)
-    ax[0].plot(time, env.environment.lfp)
-    ax[0].set_ylabel('LFP')
-    ax[1].plot(time, env.stim_amplitudes, color='green')
-    ax[1].set_ylabel('Stimulation Amplitudes)')
-    ax2 = ax[1].twinx()
-    ax2.plot(time, env.stim_frequencies, color='red')
-    ax2.set_ylabel('Stimulation Frequencies')
-    ax[2].plot(time, env.cumulative_rewards, color='black')
-    ax[2].set_ylabel('Cumulative Rewards')
+    fig, ax = plt.subplots(4, 1, figsize=(15, 10), sharex=True)
+    ax[0].plot(time, env.environment.lfp, label='LFP')
+    ax[0].plot(time, env.environment.filter_state_1[:-1], label='filter_state1')
+    ax[0].plot(time, env.environment.filter_state_2[:-1], label='filter_state2')
+    ax[0].plot(time, env.environment.filter_state_3[:-2], label='filter_state3')
+    ax[0].set_ylabel('A.U.')
+    ax[0].legend()
+    ax[2].plot(time, env.stim_amplitudes, color='green', label='Amplitude')
+    ax[2].set_ylabel('Stimulation Amplitudes')
+    ax[2].legend()
+    ax3 = ax[2].twinx()
+    ax3.plot(time, env.stim_frequencies, color='red', label='Frequency')
+    ax3.set_ylabel('Stimulation Frequencies')
+    ax3.legend()
+    ax[3].plot(time, env.cumulative_rewards, color='black')
+    ax[3].set_ylabel('Cumulative Rewards')
     plt.show()
 
 
