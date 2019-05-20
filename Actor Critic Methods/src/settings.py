@@ -24,6 +24,8 @@ STIM_BLOCK_TIME = 10  # How often to choose a different action (in seconds)
 STIM_BLOCK_SAMPLES = STIM_BLOCK_TIME * Fs  # How often to choose a different action (in samples)
 
 """################### DNN Settings ####################"""
+NUM_HIDDEN_LAYERS = 3
+NUM_UNITS_PER_LAYER = 16
 MEMORY_CAPACITY = 100000  # How many samples of previous states to hold in memory buffer
 BATCH_SIZE = 64  # How many samples to train on
 LEARNING_RATE = 0.1  # Learning rate of backpropagation algorithm

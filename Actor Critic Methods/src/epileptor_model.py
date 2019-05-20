@@ -26,9 +26,8 @@ class Brain:
     def _createModel(self):
         model = Sequential()
 
-        model.add(Dense(units=16, activation='relu', input_dim=self.stateCnt))
-        model.add(Dense(units=16, activation='relu', input_dim=self.stateCnt))
-        model.add(Dense(units=16, activation='relu', input_dim=self.stateCnt))
+        for layer in range(NUM_HIDDEN_LAYERS):
+            model.add(Dense(units=NUM_UNITS_PER_LAYER, activation='relu', input_dim=self.stateCnt))
         model.add(Dense(units=self.actionCnt, activation='linear'))
 
         opt = Adam(lr=LEARNING_RATE)
