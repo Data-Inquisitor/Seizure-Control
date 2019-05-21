@@ -47,7 +47,7 @@ class Brain:
         self.model_.set_weights(self.model.get_weights())
 
 
-class Memory:   # stored as ( s, a, r, s_, a_ )
+class Memory:   # stored as ( s, a, r, s_ )
     samples = []
 
     def __init__(self, capacity):
@@ -111,14 +111,14 @@ class Agent(object):
 
         for i in range(batch_len):
             o = batch[i]
-            states_, action, reward, next_states_, actions_ = o
+            states_, action, reward, next_states_ = o
             unpack_action = action['Action'].values[0]
 
             t = predictions[i]
 
             t[unpack_action] = reward + GAMMA * np.amax(future_predictions[i]) - np.amax(predictions[i])
 
-            x[i] = states_.reshape(1, 3)
+            x[i] = states_.reshape(1, self.stateCnt)
 
             y[i] = t
 
@@ -157,12 +157,11 @@ class Environment(object):
                 next_action = agent.act(states_, self.actions_df)
 
                 # Observe new state
-                sarsa_packet = (states.reshape(1, 3).flatten(),
+                q_packet = (states.reshape(1, agent.stateCnt).flatten(),
                                 action,
                                 reward,
-                                states_.reshape(1, 3).flatten(),
-                                next_action)
-                agent.observe(sarsa_packet)
+                                states_.reshape(1, agent.stateCnt).flatten())
+                agent.observe(q_packet)
                 # Learn from past experiences
                 agent.replay()
             elif (np.mod(step, self.stim_block_samples) == 0) and step < 6:
