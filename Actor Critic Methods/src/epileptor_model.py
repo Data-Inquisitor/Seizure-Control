@@ -9,6 +9,7 @@ from keras.optimizers import *
 
 from src.environments import Epileptor
 from src.settings import *
+from src.SumTree import SumTree
 
 
 class Brain:
@@ -47,24 +48,37 @@ class Brain:
         self.model_.set_weights(self.model.get_weights())
 
 
-class Memory:   # stored as ( s, a, r, s_ )
-    samples = []
+class Memory:   # stored as ( s, a, r, s_ ) in SumTree
+    e = 0.01
+    a = 0.6
 
     def __init__(self, capacity):
-        self.capacity = capacity
+        self.tree = SumTree(capacity)
 
-    def add(self, sample):
-        self.samples.append(sample)
+    def _getPriority(self, error):
+        return (error + self.e) ** self.a
 
-        if len(self.samples) > self.capacity:
-            self.samples.pop(0)
+    def add(self, error, sample):
+        p = self._getPriority(error)
+        self.tree.add(p, sample)
 
     def sample(self, n):
-        n = min(n, len(self.samples))
-        return random.sample(self.samples, n)
+        batch = []
+        segment = self.tree.total() / n
 
-    def isFull(self):
-        return len(self.samples) >= self.capacity
+        for i in range(n):
+            a = segment * i
+            b = segment * (i + 1)
+
+            s = random.uniform(a, b)
+            (idx, p, data) = self.tree.get(s)
+            batch.append( (idx, data) )
+
+        return batch
+
+    def update(self, idx, error):
+        p = self._getPriority(error)
+        self.tree.update(idx, p)
 
 
 class Agent(object):
@@ -86,7 +100,8 @@ class Agent(object):
             return action_df.loc[(action_df['Action'] == action_num), :]
 
     def observe(self, sample):  # in (s, a, r, s_) format
-        self.memory.add(sample)
+        x, y, errors = self._getTargets([(0, sample)])
+        self.memory.add(errors[0], sample)
 
         if self.steps % UPDATE_TARGET_FREQUENCY == 0:
             self.brain.updateTargetModel()
@@ -95,32 +110,46 @@ class Agent(object):
         self.steps += 1
         self.epsilon = MIN_EPSILON + (MAX_EPSILON - MIN_EPSILON) * np.exp(-LAMBDA * self.steps)
 
-    def replay(self):
-        batch = self.memory.sample(BATCH_SIZE)
-        batch_len = len(batch)
+
+    def _getTargets(self, batch):
         no_state = np.zeros(self.stateCnt)
+        batch_len = len(batch)
+        states = np.array([o[1][0] for o in batch])
+        states_ = np.array([(no_state if o[1][3] is None else o[1][3]) for o in batch])
 
-        states_ = np.array([o[0] for o in batch])
-        next_states_ = np.array([(no_state if o[3] is None else o[3]) for o in batch])
+        p = self.brain.predict(states)
 
-        predictions = self.brain.predict(states_)
-        future_predictions = self.brain.predict(next_states_)
+        p_ = self.brain.predict(states_, target=False)
+        pTarget_ = self.brain.predict(states_, target=True)
 
         x = np.zeros((batch_len, self.stateCnt))
         y = np.zeros((batch_len, self.actionCnt))
+        errors = np.zeros(len(batch))
 
-        for i in range(batch_len):
-            o = batch[i]
+        for i in range(len(batch)):
+            o = batch[i][1]
             states_, action, reward, next_states_ = o
             unpack_action = action['Action'].values[0]
 
-            t = predictions[i]
+            t = p[i]
+            oldVal = t[unpack_action]
 
-            t[unpack_action] = reward + GAMMA * np.amax(future_predictions[i]) - np.amax(predictions[i])
+            t[unpack_action] = reward + GAMMA * pTarget_[i][np.argmax(p_[i])]  # double DQN
 
             x[i] = states_.reshape(1, self.stateCnt)
-
             y[i] = t
+            errors[i] = abs(oldVal - t[unpack_action])
+
+        return (x, y, errors)
+
+    def replay(self):
+        batch = self.memory.sample(BATCH_SIZE)
+        x, y, errors = self._getTargets(batch)
+
+        # update errors
+        for i in range(len(batch)):
+            idx = batch[i][0]
+            self.memory.update(idx, errors[i])
 
         self.brain.train(x, y)
 

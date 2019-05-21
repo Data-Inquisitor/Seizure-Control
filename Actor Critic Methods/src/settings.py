@@ -44,13 +44,15 @@ TAU_NORM = 1/(1-TAU_FILT)
 
 """################### Filter Settings ####################"""
 # Filter coefficients to get states from LFP
-b_coeff_h, a_coeff_h = butter(N=1, Wn=4 / (Fs / 2), btype='hp', fs=Fs)
+b_coeff_h, a_coeff_h = butter(N=1, Wn=10 / (Fs / 2), btype='hp', fs=Fs)
 b_coeff_l, a_coeff_l = butter(N=1, Wn=1 / (Fs / 2), btype='low', fs=Fs)
-b_coeff_m, a_coeff_m = butter(N=1, Wn=[1 / (Fs / 2), 4 / (Fs / 2)], btype='bp', fs=Fs)
+b_coeff_m1, a_coeff_m1 = butter(N=1, Wn=[1 / (Fs / 2), 4 / (Fs / 2)], btype='bp', fs=Fs)
+b_coeff_m2, a_coeff_m2 = butter(N=1, Wn=[4 / (Fs / 2), 10 / (Fs / 2)], btype='bp', fs=Fs)
 
 states = {'State1': {'Num': b_coeff_h, 'Den': a_coeff_h},
           'State2': {'Num': b_coeff_l, 'Den': a_coeff_l},
-          'State3': {'Num': b_coeff_m, 'Den': a_coeff_m}}
+          'State3': {'Num': b_coeff_m1, 'Den': a_coeff_m1},
+          'State4': {'Num': b_coeff_m2, 'Den': a_coeff_m2}}
 
 """################### Action Settings ####################"""
 actions_df = pd.DataFrame(columns=['Action', 'Frequency', 'Amplitude'])

@@ -29,7 +29,7 @@ FIGURE_DIR = os.path.join(WORK_DIR, 'figures')
 random.seed(1)
 
 
-def visualizations(time_s, lfp, s1, s2, s3, amp, freq, rew, output_dir):
+def visualizations(time_s, lfp, s1, s2, s3, s4, amp, freq, rew, output_dir):
     fig, ax = plt.subplots(4, 1, figsize=(15, 10), sharex=True)
     ax[0].plot(time_s, lfp, color='black')
     ax[0].set_ylabel('LFP (A.U.)')
@@ -37,6 +37,7 @@ def visualizations(time_s, lfp, s1, s2, s3, amp, freq, rew, output_dir):
     ax[1].plot(time_s, s1[:-1], label='State1')
     ax[1].plot(time_s, s2[:-1], label='State2')
     ax[1].plot(time_s, s3[:-2], label='State3')
+    ax[1].plot(time_s, s4[:-2], label='State4')
     ax[1].set_ylabel('State Variables (A.U.)')
     ax[1].legend()
     ax[2].plot(time_s, amp, color='green', label='Amplitude')
@@ -67,7 +68,7 @@ def run():
     time_vec = np.linspace(0, MAX_TIME_STEPS * PERIOD, MAX_TIME_STEPS)
 
     visualizations(time_vec, env.environment.lfp, env.environment.filter_state_1,
-        env.environment.filter_state_2, env.environment.filter_state_3,
+        env.environment.filter_state_2, env.environment.filter_state_3, env.environment.filter_state_4,
         env.stim_amplitudes, env.stim_frequencies, env.cumulative_rewards, FIGURE_DIR)
 
 
