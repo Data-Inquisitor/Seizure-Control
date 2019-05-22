@@ -27,7 +27,7 @@ class Brain:
             model.add(Dense(units=NUM_UNITS_PER_LAYER, activation='relu', input_dim=self.stateCnt))
         model.add(Dense(units=self.actionCnt, activation='linear'))
 
-        opt = SGD(lr=LEARNING_RATE)
+        opt = RMSprop(lr=LEARNING_RATE)
         model.compile(loss='mse', optimizer=opt)
 
         return model
@@ -49,14 +49,14 @@ class Brain:
 
 
 class Memory:   # stored as ( s, a, r, s_ ) in SumTree
-    e = 0.01
-    a = 0.6
-
     def __init__(self, capacity):
         self.tree = SumTree(capacity)
 
     def _getPriority(self, error):
-        return (error + self.e) ** self.a
+        # Proportional prioritization
+        # epsilon is designed to make sure no transition has zero priority
+        # alpha controls the difference between high and low error. If alpha=0 then all experiences are equal.
+        return (error + PER_EPSILON) ** PER_ALPHA
 
     def add(self, error, sample):
         p = self._getPriority(error)
