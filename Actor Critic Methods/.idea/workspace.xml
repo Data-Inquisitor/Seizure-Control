@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/epileptor_model.py" line="238" mnemonic="9" />
+    <bookmark url="file://$PROJECT_DIR$/src/epileptor_model.py" line="239" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2aabc81-b50e-406e-a394-0b8ebe0b30b0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/SumTree.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/seizure_control_using_reinforcement_learning.ipynb" afterPath="$PROJECT_DIR$/notebooks/seizure_control_using_reinforcement_learning.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/environments.py" afterPath="$PROJECT_DIR$/src/environments.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/epileptor_model.py" afterPath="$PROJECT_DIR$/src/epileptor_model.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/execute_simulation.py" afterPath="$PROJECT_DIR$/src/execute_simulation.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/settings.py" afterPath="$PROJECT_DIR$/src/settings.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +26,8 @@
                 <file leaf-file-name="Seaquest-DDQN-PER.py" pinned="false" current-in-tab="true">
                   <entry file="file://D:/Analytics/GitHub/AI-blog/Seaquest-DDQN-PER.py">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="348">
-                        <caret line="152" column="0" lean-forward="false" selection-start-line="152" selection-start-column="0" selection-end-line="153" selection-end-column="42" />
+                      <state relative-caret-position="2788">
+                        <caret line="188" column="20" lean-forward="true" selection-start-line="188" selection-start-column="20" selection-end-line="188" selection-end-column="20" />
                         <folding>
                           <element signature="e#367#405#0" expanded="true" />
                         </folding>
@@ -43,11 +39,31 @@
             </split-first>
             <split-second>
               <leaf>
-                <file leaf-file-name="SumTree.py" pinned="false" current-in-tab="true">
+                <file leaf-file-name="CartPole-DQN.py" pinned="false" current-in-tab="true">
+                  <entry file="file://D:/Analytics/GitHub/AI-blog/CartPole-DQN.py">
+                    <provider selected="true" editor-type-id="text-editor">
+                      <state relative-caret-position="-216">
+                        <caret line="150" column="51" lean-forward="true" selection-start-line="150" selection-start-column="51" selection-end-line="150" selection-end-column="51" />
+                        <folding />
+                      </state>
+                    </provider>
+                  </entry>
+                </file>
+                <file leaf-file-name="SumTree.py" pinned="false" current-in-tab="false">
                   <entry file="file://D:/Analytics/GitHub/AI-blog/SumTree.py">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="243">
-                        <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+                      <state relative-caret-position="362">
+                        <caret line="26" column="42" lean-forward="false" selection-start-line="26" selection-start-column="42" selection-end-line="26" selection-end-column="42" />
+                        <folding />
+                      </state>
+                    </provider>
+                  </entry>
+                </file>
+                <file leaf-file-name="MountainCar-basic.py" pinned="false" current-in-tab="false">
+                  <entry file="file://D:/Analytics/GitHub/AI-blog/MountainCar-basic.py">
+                    <provider selected="true" editor-type-id="text-editor">
+                      <state relative-caret-position="408">
+                        <caret line="173" column="29" lean-forward="false" selection-start-line="173" selection-start-column="29" selection-end-line="173" selection-end-column="29" />
                         <folding />
                       </state>
                     </provider>
@@ -64,11 +80,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="epileptor_model.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="epileptor_model.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/epileptor_model.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1717">
-                  <caret line="101" column="57" lean-forward="false" selection-start-line="101" selection-start-column="57" selection-end-line="101" selection-end-column="57" />
+                <state relative-caret-position="-357">
+                  <caret line="26" column="50" lean-forward="false" selection-start-line="26" selection-start-column="50" selection-end-line="26" selection-end-column="50" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
                   </folding>
@@ -76,11 +92,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="execute_simulation.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="execute_simulation.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/execute_simulation.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="119">
-                  <caret line="7" column="18" lean-forward="true" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="32" />
+                <state relative-caret-position="284">
+                  <caret line="33" column="42" lean-forward="true" selection-start-line="33" selection-start-column="42" selection-end-line="33" selection-end-column="42" />
                   <folding>
                     <element signature="e#971#980#0" expanded="true" />
                   </folding>
@@ -95,8 +111,8 @@
           <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/settings.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="94">
-                  <caret line="18" column="16" lean-forward="false" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
+                <state relative-caret-position="502">
+                  <caret line="33" column="39" lean-forward="false" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
                   </folding>
@@ -107,7 +123,7 @@
           <file leaf-file-name="environments.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/environments.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="340">
+                <state relative-caret-position="544">
                   <caret line="107" column="0" lean-forward="false" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
@@ -119,7 +135,7 @@
           <file leaf-file-name="SumTree.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/SumTree.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="391">
+                <state relative-caret-position="301">
                   <caret line="23" column="23" lean-forward="true" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
                   <folding />
                 </state>
@@ -145,6 +161,7 @@
       <find>train</find>
       <find>flatten</find>
       <find>reshape</find>
+      <find>actions_df</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -257,6 +274,23 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
+    <configuration name="Seaquest-DDQN-PER" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="D:/Analytics/GitHub/AI-blog" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Actor Critic Methods" />
+      <option name="SCRIPT_NAME" value="D:/Analytics/GitHub/AI-blog/Seaquest-DDQN-PER.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <configuration name="environments" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -308,38 +342,21 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <configuration name="settings" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Actor Critic Methods" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/settings.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
     <list size="6">
-      <item index="0" class="java.lang.String" itemvalue="Python.settings" />
-      <item index="1" class="java.lang.String" itemvalue="Python.CartPole-DQN" />
-      <item index="2" class="java.lang.String" itemvalue="Python.CartPole-basic" />
-      <item index="3" class="java.lang.String" itemvalue="Python.environments" />
-      <item index="4" class="java.lang.String" itemvalue="Python.execute_simulation" />
-      <item index="5" class="java.lang.String" itemvalue="Python.epileptor_model" />
+      <item index="0" class="java.lang.String" itemvalue="Python.CartPole-DQN" />
+      <item index="1" class="java.lang.String" itemvalue="Python.CartPole-basic" />
+      <item index="2" class="java.lang.String" itemvalue="Python.environments" />
+      <item index="3" class="java.lang.String" itemvalue="Python.execute_simulation" />
+      <item index="4" class="java.lang.String" itemvalue="Python.epileptor_model" />
+      <item index="5" class="java.lang.String" itemvalue="Python.Seaquest-DDQN-PER" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.execute_simulation" />
-        <item index="1" class="java.lang.String" itemvalue="Python.epileptor_model" />
-        <item index="2" class="java.lang.String" itemvalue="Python.environments" />
-        <item index="3" class="java.lang.String" itemvalue="Python.CartPole-DQN" />
-        <item index="4" class="java.lang.String" itemvalue="Python.settings" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Seaquest-DDQN-PER" />
+        <item index="2" class="java.lang.String" itemvalue="Python.epileptor_model" />
+        <item index="3" class="java.lang.String" itemvalue="Python.environments" />
+        <item index="4" class="java.lang.String" itemvalue="Python.CartPole-DQN" />
       </list>
     </recent_temporary>
   </component>
@@ -408,7 +425,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="86" />
+      <option name="time" value="90" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -417,9 +434,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2516">
           <caret line="148" column="0" lean-forward="true" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
-          <folding>
-            <element signature="e#300#336#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -475,9 +490,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#300#336#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -520,16 +533,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/Analytics/GitHub/AI-blog/CartPole-DQN.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2261">
-          <caret line="148" column="0" lean-forward="false" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
-          <folding>
-            <element signature="e#300#336#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/Analytics/GitHub/AI-blog/CartPole-basic.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -540,25 +543,51 @@
     </entry>
     <entry file="file://D:/Analytics/GitHub/AI-blog/SumTree.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+        <state relative-caret-position="362">
+          <caret line="26" column="42" lean-forward="false" selection-start-line="26" selection-start-column="42" selection-end-line="26" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Analytics/GitHub/AI-blog/MountainCar-basic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="173" column="29" lean-forward="false" selection-start-line="173" selection-start-column="29" selection-end-line="173" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://D:/Analytics/GitHub/AI-blog/Seaquest-DDQN-PER.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="152" column="0" lean-forward="false" selection-start-line="152" selection-start-column="0" selection-end-line="153" selection-end-column="42" />
+        <state relative-caret-position="2788">
+          <caret line="188" column="20" lean-forward="true" selection-start-line="188" selection-start-column="20" selection-end-line="188" selection-end-column="20" />
           <folding>
             <element signature="e#367#405#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://D:/Analytics/GitHub/AI-blog/CartPole-DQN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-216">
+          <caret line="150" column="51" lean-forward="true" selection-start-line="150" selection-start-column="51" selection-end-line="150" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/execute_simulation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="33" column="42" lean-forward="true" selection-start-line="33" selection-start-column="42" selection-end-line="33" selection-end-column="42" />
+          <folding>
+            <element signature="e#971#980#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/SumTree.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
+        <state relative-caret-position="301">
           <caret line="23" column="23" lean-forward="true" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
           <folding />
         </state>
@@ -566,18 +595,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/environments.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
+        <state relative-caret-position="544">
           <caret line="107" column="0" lean-forward="false" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="18" column="16" lean-forward="false" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
@@ -586,20 +605,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/epileptor_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1717">
-          <caret line="101" column="57" lean-forward="false" selection-start-line="101" selection-start-column="57" selection-end-line="101" selection-end-column="57" />
+        <state relative-caret-position="-357">
+          <caret line="26" column="50" lean-forward="false" selection-start-line="26" selection-start-column="50" selection-end-line="26" selection-end-column="50" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/execute_simulation.py">
+    <entry file="file://$PROJECT_DIR$/src/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="18" lean-forward="true" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="32" />
+        <state relative-caret-position="502">
+          <caret line="33" column="39" lean-forward="false" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
           <folding>
-            <element signature="e#971#980#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>

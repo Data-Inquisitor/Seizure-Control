@@ -16,27 +16,27 @@ Irest2 = 0.45
 Ep_gamma = 0.01
 
 """################### Simulation Settings ####################"""
-TOTAL_TIME = 1000  # How long we want to run the simulation (in seconds)
+TOTAL_TIME = 1500  # How long we want to run the simulation (in seconds)
 PERIOD = 0.002     # Sampling period in seconds
 Fs = 1 / PERIOD    # Sampling rate
 MAX_TIME_STEPS = TOTAL_TIME / PERIOD  # Maximum number of iterations to loop through
-STIM_BLOCK_TIME = 10  # How often to choose a different action (in seconds)
+STIM_BLOCK_TIME = 15  # How often to choose a different action (in seconds)
 STIM_BLOCK_SAMPLES = STIM_BLOCK_TIME * Fs  # How often to choose a different action (in samples)
 
 """################### DNN Settings ####################"""
 NUM_HIDDEN_LAYERS = 3
-NUM_UNITS_PER_LAYER = 16
-MEMORY_CAPACITY = 100000  # How many samples of previous states to hold in memory buffer
-BATCH_SIZE = 64  # How many samples to train on
+NUM_UNITS_PER_LAYER = 64
+MEMORY_CAPACITY = 200000  # How many samples of previous states to hold in memory buffer
+BATCH_SIZE = 32  # How many samples to train on
 LEARNING_RATE = 0.1  # Learning rate of backpropagation algorithm
-UPDATE_TARGET_FREQUENCY = 10000  # How often to update weights
+UPDATE_TARGET_FREQUENCY = 15000  # How often to update weights
 
 """################### RL Settings ####################"""
 GAMMA = 0.005    # Discounting factor, how much do we want to trust in the future
-MAX_EPSILON = 0.50  # Maximum probability of choosing a random action
+MAX_EPSILON = 0.75  # Maximum probability of choosing a random action
 MIN_EPSILON = 0.01  # Minimum probability of choosing a random action
 LAMBDA = 0.01  # speed of decay of probability of choosing a random action
-COST_WEIGHT = 0.05  # How much we want to weight the cost of stimulation therapy
+COST_WEIGHT = 1  # How much we want to weight the cost of stimulation therapy
 
 # Exponential filter for the reward signal
 TAU_FILT = math.exp(-1./4000)
