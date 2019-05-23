@@ -16,19 +16,26 @@ class Brain:
     def __init__(self, stateCnt, actionCnt):
         self.stateCnt = stateCnt
         self.actionCnt = actionCnt
+        self.is_weight = 1
 
         self.model = self._createModel()
         self.model_ = self._createModel()
 
+    # TODO: Implement Importance sampling loss function
+    def _importance_sampling_loss(self):
+
+        return None
+
     def _createModel(self):
+
         model = Sequential()
 
         for layer in range(NUM_HIDDEN_LAYERS):
             model.add(Dense(units=NUM_UNITS_PER_LAYER, activation='relu', input_dim=self.stateCnt))
         model.add(Dense(units=self.actionCnt, activation='linear'))
 
-        opt = RMSprop(lr=LEARNING_RATE)
-        model.compile(loss='mse', optimizer=opt)
+        opt = Adam(lr=LEARNING_RATE)
+        model.compile(loss='mean_squared_error', optimizer=opt)
 
         return model
 
@@ -87,6 +94,7 @@ class Agent(object):
         self.stateCnt = stateCnt
         self.actionCnt = actionCnt
         self.epsilon = 0
+        self.steps = 0
         self.brain = Brain(stateCnt, actionCnt)
         self.memory = Memory(MEMORY_CAPACITY)
 
@@ -98,15 +106,16 @@ class Agent(object):
             action_num = np.argmax(self.brain.predictOne(state))
             return action_df.loc[(action_df['Action'] == action_num), :]
 
-    def observe(self, sample, steps_):  # in (s, a, r, s_) format
+    def observe(self, sample):  # in (s, a, r, s_) format
         x, y, errors = self.get_targets([(0, sample)])
         self.memory.add(errors[0], sample)
 
-        if steps_ % UPDATE_TARGET_FREQUENCY == 0:
+        if self.steps % UPDATE_TARGET_FREQUENCY == 0:
             self.brain.updateTargetModel()
 
-        # slowly decrease Epsilon based on our experience
-        self.epsilon = MIN_EPSILON + (MAX_EPSILON - MIN_EPSILON) * np.exp(-LAMBDA * steps_)
+        # slowly decrease Epsilon based on our eperience
+        self.steps += 1
+        self.epsilon = MIN_EPSILON + (MAX_EPSILON - MIN_EPSILON) * math.exp(-LAMBDA * self.steps)
 
     def get_targets(self, batch):
         no_state = np.zeros(self.stateCnt)
@@ -135,11 +144,11 @@ class Agent(object):
             # Double Q-learning update
             t[unpack_action] = reward + GAMMA * pTarget_[i][np.argmax(p_[i])]  # double DQN
 
+            # Double Q-learning error
+            errors[i] = abs(t[unpack_action] - current_qval)
+
             x[i] = states_.reshape(1, self.stateCnt)
             y[i] = t
-
-            # Double Q-learning error
-            errors[i] = abs(current_qval - t[unpack_action])
 
         return x, y, errors
 
@@ -191,7 +200,7 @@ class Environment(object):
                             reward,
                             next_states.reshape(1, agent.stateCnt).flatten())
 
-                agent.observe(q_packet, step)
+                agent.observe(q_packet)
                 # Learn from past experiences
                 agent.replay()
             elif (np.mod(step, self.stim_block_samples) == 0) and step < 6:

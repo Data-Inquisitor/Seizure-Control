@@ -47,7 +47,7 @@ def visualizations(time_s, lfp, s1, s2, s3, s4, amp, freq, rew, output_dir):
     ax2.plot(time_s, freq, color='red', label='Frequency')
     ax2.set_ylabel('Stimulation Frequencies')
     ax2.legend(loc='upper left')
-    ax[3].plot(time_s, rew, color='black')
+    ax[3].plot(time_s, np.cumsum(rew), color='black')
     ax[3].set_ylabel('Cumulative Rewards (A.U.)')
     ax[3].set_xlabel('Time (s)')
     plt.tight_layout()

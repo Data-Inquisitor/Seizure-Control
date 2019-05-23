@@ -56,9 +56,9 @@ class Epileptor(object):
         self.state_x2 = self.state_x2 + self.time_step * (-self.state_y2 + self.state_x2 - self.state_x2**3 +
                                                               Irest2 + 3 * self.state_u - 0.3 *
                                                               (self.state_z - 3.5)) / taux + \
-                            0.05 * np.random.randn() * self.scale_factor
+                            0.1 * np.random.randn() * self.scale_factor
 
-        h = x0 + (10 / (1 + np.exp((-self.state_x1 - 0.5) / 0.1)))
+        h = x0 + (7 / (1 + np.exp((-self.state_x1 - 0.5) / 0.1)))
         self.state_z = self.state_z + (self.time_step / tau0) * (h - self.state_z)
         self.state_u = self.state_u - self.time_step * Ep_gamma * (self.state_u - 0.1 * self.state_x1) /\
                                           taux
@@ -67,7 +67,7 @@ class Epileptor(object):
                                             (y0 - 5 * (self.state_x1**2) - self.state_y1)
         self.state_y2 = self.state_y2 + (self.time_step / tau2) * \
                                             (-self.state_y2 + _output_2(self.state_x2)) + \
-                            0.05 * np.random.randn() * self.scale_factor
+                            0.1 * np.random.randn() * self.scale_factor
 
         # Add stimulation to x1 and x2 state variables when the steps has exceeded the number of samples between pulses
         if (step_ - self.past_step) > (1/action['Frequency'].values[0] * (1/self.time_step)):
@@ -118,7 +118,7 @@ class Epileptor(object):
                               self.state_estimators['State4']['Den'][2] * self.filter_state_4[-2]][0]
 
             # Reward filter
-            filtLFP = np.ma.average([i ** 2 for i in self.lfp[-5:]])
+            filtLFP = np.mean([i ** 2 for i in self.lfp[-20:]])
 
             self.smoothLFPPower.append(filtLFP**2 / TAU_NORM + TAU_FILT * self.smoothLFPPower[-1])
 
@@ -130,7 +130,7 @@ class Epileptor(object):
         self.filter_state_4.append(new_state4)
 
         return np.asarray([self.filter_state_1[-1], self.filter_state_2[-1],
-                           self.filter_state_2[-1], self.filter_state_4[-1]]), reward
+                           self.filter_state_2[-1], self.filter_state_4[-1]]), reward ** 2
 
 
 if __name__ in '__main__':
