@@ -44,7 +44,7 @@ TAU_NORM = 1/(1-TAU_FILT)
 
 """################### PER Settings ####################"""
 PER_EPSILON = 0.01
-PER_ALPHA = 0
+PER_ALPHA = 0.6
 
 """################### Filter Settings ####################"""
 # Filter coefficients to get states from LFP
