@@ -18,15 +18,12 @@ recruitment in partial epilepsy. Journal of Neuroscience. 2014 Nov 5;34(45):1500
 
 
 import os
-import random
 from time import localtime, strftime
 
 from src.epileptor_model import *
 
-WORK_DIR = r'C:\Users\vnaga\Google Drive\Seizure-Control\Actor Critic Methods'
+WORK_DIR = r'C:\Users\Data_\Google Drive\Seizure-Control\Actor Critic Methods'
 FIGURE_DIR = os.path.join(WORK_DIR, 'figures')
-
-random.seed(1)
 
 
 def visualizations(time_s, lfp, s1, s2, s3, s4, amp, freq, rew, output_dir):

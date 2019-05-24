@@ -11,6 +11,8 @@ from src.environments import Epileptor
 from src.settings import *
 from src.SumTree import SumTree
 
+random.seed(1)
+
 
 class Brain:
     def __init__(self, stateCnt, actionCnt):
